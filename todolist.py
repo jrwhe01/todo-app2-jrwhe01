@@ -5,6 +5,27 @@ A simple command-line To-Do List application that allows users to manage tasks.
 
 from typing import List
 
+class Task:
+    def __init__(self, name: str = "newTask", date: str = "01-01-1980"):
+        self.name = name
+        self.date = date
+        self.completed = False
+
+    def __str__(self):
+        return f"{self.name}, Due: {self.date}"
+    
+    def __repr__(self):
+        return f"{self.name=}\n{self.date=}\n{self.completed=}\n"
+
+    def change_name(self, newName: str):
+        self.name = newName
+
+    def change_date(self, newDate: str):
+        self.date = newDate
+
+    def mark_completed(self):
+        self.completed = True
+
 
 class Todo:
     """A simple To-Do list application that manages tasks in memory.
@@ -15,9 +36,9 @@ class Todo:
 
     def __init__(self) -> None:
         """Initialize a new Todo instance with an empty task list."""
-        self.tasks: List[str] = []
+        self.tasks: List[Task] = []
 
-    def add_task(self, task: str) -> None:
+    def add_task(self, taskName: str) -> None:
         """Add a new task to the list.
 
         Args:
@@ -27,13 +48,15 @@ class Todo:
             Prints a success message if the task is added,
             or an error message if the task is empty.
         """
-        if task:
+        if taskName:
+            taskDate = input("When is this task due? (MM-DD-YYYY) ")
+            task = Task(taskName, taskDate)
             self.tasks.append(task)
             print(f"Task '{task}' added successfully.")
         else:
             print("Task cannot be empty.")
 
-    def delete_task(self, task: str) -> None:
+    def delete_task(self, task: Task) -> None:
         """Delete a task from the list.
 
         Args:
@@ -45,9 +68,9 @@ class Todo:
         """
         if task in self.tasks:
             self.tasks.remove(task)
-            print(f"Task '{task}' deleted successfully.")
+            print(f"Task '{task.name}' deleted successfully.")
         else:
-            print(f"Task '{task}' not found.")
+            print(f"Task '{task.name}' not found.")
 
     def show_tasks(self) -> None:
         """Display all current tasks in a numbered list.
